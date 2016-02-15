@@ -38,7 +38,7 @@ module.exports = React.createClass({
 
     this.interval = setInterval(function () {
       that._redrawListView();
-    }, 1000);
+    }, 250);
   },
 
   componentWillUnmount: function() {
