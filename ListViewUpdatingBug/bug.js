@@ -26,9 +26,9 @@ module.exports = React.createClass({
     }
     // generate some data that changes over time...
     var data = [];
-      data.push([i, new Date().getTime()]);
     for(var i = 0; i < this.rowCount; i++)
     {
+      data.push([i, new Date().getTime(), this.rowCount ].join( ' - ' ));
     }
     this.rowCount++;
     this.setState({
@@ -61,9 +61,16 @@ module.exports = React.createClass({
   },
 
   render() {
+
+    // renderScrollComponent={() => <React.RecyclerViewBackedScrollView/>}; fixes issue
+    // renderScrollComponent={( p ) => { return <React.RecyclerViewBackedScrollView/>;}}
+    // scrollRenderAheadDistance={0} => crashes > 0, does not scroll with 0
+    // removeClippedSubviews={false} => fixes issue
+    // renderScrollComponent={( p ) => { return <React.RecyclerViewBackedScrollView/>;}}
     return (
       <View style={styles.container}>
-        <ListView dataSource={this.state.dataSource} renderRow={this.renderRow} />
+        <ListView dataSource={this.state.dataSource}
+                  renderRow={this.renderRow} />
       </View>
     );
   }
