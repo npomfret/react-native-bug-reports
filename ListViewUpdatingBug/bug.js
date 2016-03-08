@@ -31,10 +31,7 @@ module.exports = React.createClass({
       data.push([i, new Date().getTime(), this.rowCount ].join( ' - ' ));
     }
     this.rowCount++;
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows( [] )
-    });
-    */
+
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows( data )
     });
@@ -62,11 +59,10 @@ module.exports = React.createClass({
 
   render() {
 
-    // renderScrollComponent={() => <React.RecyclerViewBackedScrollView/>}; fixes issue
-    // renderScrollComponent={( p ) => { return <React.RecyclerViewBackedScrollView/>;}}
-    // scrollRenderAheadDistance={0} => crashes > 0, does not scroll with 0
+    // renderScrollComponent={( p ) => { return <React.RecyclerViewBackedScrollView ...p/>;}} works
+    // scrollRenderAheadDistance={0} => crashes > 0, does not scroll with 0, does not crash with 0
     // removeClippedSubviews={false} => fixes issue
-    // renderScrollComponent={( p ) => { return <React.RecyclerViewBackedScrollView/>;}}
+    // style={{overflow:'hidden'}} in render row => works
     return (
       <View style={styles.container}>
         <ListView dataSource={this.state.dataSource}
