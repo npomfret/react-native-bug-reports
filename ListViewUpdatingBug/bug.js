@@ -15,21 +15,28 @@ module.exports = React.createClass({
     return {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
-      }),
-      rowCount: 1
+      })
     }
   },
 
   _redrawListView: function() {
+    if( !this.rowCount )
+    {
+      this.rowCount = 0;
+    }
     // generate some data that changes over time...
     var data = [];
-    for(var i = 0; i < this.state.rowCount; i++) {
       data.push([i, new Date().getTime()]);
+    for(var i = 0; i < this.rowCount; i++)
+    {
     }
-    this.setState({rowCount: this.state.rowCount + 1});
-
+    this.rowCount++;
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(data)
+      dataSource: this.state.dataSource.cloneWithRows( [] )
+    });
+    */
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows( data )
     });
   },
 
