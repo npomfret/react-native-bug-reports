@@ -15,21 +15,25 @@ module.exports = React.createClass({
     return {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
-      }),
-      rowCount: 1
+      })
     }
   },
 
   _redrawListView: function() {
+    if( !this.rowCount )
+    {
+      this.rowCount = 0;
+    }
     // generate some data that changes over time...
     var data = [];
-    for(var i = 0; i < this.state.rowCount; i++) {
-      data.push([i, new Date().getTime()]);
+    for(var i = 0; i < this.rowCount; i++)
+    {
+      data.push([i, new Date().getTime(), this.rowCount ].join( ' - ' ));
     }
-    this.setState({rowCount: this.state.rowCount + 1});
+    this.rowCount++;
 
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(data)
+      dataSource: this.state.dataSource.cloneWithRows( data )
     });
   },
 
@@ -54,9 +58,15 @@ module.exports = React.createClass({
   },
 
   render() {
+
+    // renderScrollComponent={( p ) => { return <React.RecyclerViewBackedScrollView ...p/>;}} works
+    // scrollRenderAheadDistance={0} => crashes > 0, does not scroll with 0, does not crash with 0
+    // removeClippedSubviews={false} => fixes issue
+    // style={{overflow:'hidden'}} in render row => works
     return (
       <View style={styles.container}>
-        <ListView dataSource={this.state.dataSource} renderRow={this.renderRow} />
+        <ListView dataSource={this.state.dataSource}
+                  renderRow={this.renderRow} />
       </View>
     );
   }
